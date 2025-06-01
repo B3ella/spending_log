@@ -28,8 +28,11 @@ def main():
     print(spents)
 
 
-def filter_by_month(daily_notes, month):
-    return [note for note in daily_notes if note.month == month]
+def get_files():
+    addrs = base_dir
+    files = listdir(addrs)
+    return files
+
 
 def convert_file_to_daily_note(file_name):
     date = file_name[:-3]
@@ -38,17 +41,9 @@ def convert_file_to_daily_note(file_name):
     day = int(file_name[8:10])
     return Daily_note(day, month, year, date)
 
-def convert_string_to_spent(spending_line):
-    spending_line = spending_line.strip()
-    first_space = spending_line.find(" ")
-    if not spending_line:
-        return Spent("", 0)
 
-    price_str = spending_line[0:first_space].replace(",", '.')
-    price = float(price_str)
-
-    name = spending_line[first_space+1:]
-    return Spent(name, price)
+def filter_by_month(daily_notes, month):
+    return [note for note in daily_notes if note.month == month]
 
 
 def get_spending_log(date):
@@ -64,10 +59,18 @@ def get_spending_log(date):
         return spending_log
 
 
-def get_files():
-    addrs = base_dir
-    files = listdir(addrs)
-    return files
+def convert_string_to_spent(spending_line):
+    spending_line = spending_line.strip()
+    first_space = spending_line.find(" ")
+    if not spending_line:
+        return Spent("", 0)
+
+    price_str = spending_line[0:first_space].replace(",", '.')
+    price = float(price_str)
+
+    name = spending_line[first_space+1:]
+    return Spent(name, price)
+
 
 if __name__ == "__main__":
     main()
