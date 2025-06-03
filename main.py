@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from os import listdir
 
-base_dir = "/home/bella/Documents/General/4 - Archive/Diary/"
+base_dir = "/home/bella/General/4 - Archive/Diary/"
 
 @dataclass
 class Spent:
