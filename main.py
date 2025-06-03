@@ -18,6 +18,7 @@ class Daily_note:
 def main():
     all_files = get_files()
     daily_notes = list(map(convert_file_to_daily_note, all_files))
+    get_available_months(daily_notes)
     may_notes = filter_by_month(daily_notes, 3)
     spending_lines = []
     for note in may_notes:
@@ -40,6 +41,14 @@ def convert_file_to_daily_note(file_name):
     month = int(file_name[5:7])
     day = int(file_name[8:10])
     return Daily_note(day, month, year, date)
+
+
+def get_available_months(daily_notes):
+    available_months = set([])
+    for note in daily_notes:
+        month = (note.month, note.year)
+        available_months.add(month)
+    return list(available_months)
 
 
 def filter_by_month(daily_notes, month):
