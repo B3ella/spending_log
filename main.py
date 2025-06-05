@@ -18,15 +18,12 @@ class Daily_note:
 def main():
     all_files = get_files()
     daily_notes = list(map(convert_file_to_daily_note, all_files))
-    get_available_months(daily_notes)
-    may_notes = filter_by_month(daily_notes, 3)
-    spending_lines = []
-    for note in may_notes:
-        spending_lines += get_spending_log(note.date).split('\n')
-    spents = 0
-    for line in spending_lines:
-        spents += convert_string_to_spent(line).price
-    print(spents)
+    available_mmonths = get_available_months(daily_notes)
+    for (month, year) in available_mmonths:
+        try:
+            print(month_spents(daily_notes, year, month))
+        except:
+            print("erro", month, year)
 
 
 def get_files():
@@ -49,6 +46,22 @@ def get_available_months(daily_notes):
         month = (note.month, note.year)
         available_months.add(month)
     return list(available_months)
+
+
+def month_spents(daily_notes, year, month):
+    notes_from_year = filter_by_year(daily_notes, year)
+    notes_from_month = filter_by_month(notes_from_year, month)
+    spending_lines = []
+    for note in notes_from_month:
+        spending_lines += get_spending_log(note.date).split('\n')
+    spents = 0
+    for line in spending_lines:
+        spents += convert_string_to_spent(line).price
+    return spents
+
+
+def filter_by_year(daily_notes, year):
+    return [note for note in daily_notes if note.year == year]
 
 
 def filter_by_month(daily_notes, month):
